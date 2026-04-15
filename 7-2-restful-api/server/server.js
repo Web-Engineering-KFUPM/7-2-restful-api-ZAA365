@@ -12,10 +12,10 @@ import { Song } from "./models/song.model.js";
 const app = express();
 const PORT = process.env.PORT || 5174;
 
-app.use(cors());              
+app.use(cors());
 app.use(express.json());
 
-await connectDB(process.env.MONGO_URL);
+await connectDB();
 
 // api/songs (Read all songs)
 app.get("/api/songs", async (req, res) => {
