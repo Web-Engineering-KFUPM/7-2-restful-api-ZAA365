@@ -18,7 +18,19 @@ app.use(express.json());
 await connectDB(process.env.MONGO_URL);
 
 // api/songs (Read all songs)
-
+app.post("/api/songs", async (req, res) => {
+    try {
+    const { title = "", artist = "", year } = req.body || {};
+    const created = await Song.create({
+    title: title.trim(),
+    artist: artist.trim(),
+    year
+    });
+    res.status(201).json(created);
+    } catch (err) {
+    res.status(400).json({ message: err.message || "Create failed" });
+    }
+    });
 
 // api/songs (Insert song)
 
@@ -28,33 +40,6 @@ await connectDB(process.env.MONGO_URL);
 // /api/songs/:id (Delete song)
 
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
-
-
-
-/** =================================================================
- *  TODO 3 — POST /api/songs (Insert) file: server/server.js
- *  =================================================================
- *  Goal:
- *    - Insert a new song into DB.
- *    - Expect JSON body: { title, artist, year }.
- *    - Respond 201 + created song on success.
- *    - Respond 400 + {message} on validation error.
- *
- *  Syntax hint:
-      app.post("__________", async (req, res) => {
-        try {
-          const { title = "", artist = "", year } = __________ || {};
-          const created = await __________.create({
-            title: __________.trim(),
-            artist: __________.trim(),
-            year
-          });
-          res.status(____).json(__________);
-        } catch (err) {
-          res.status(____).json({ message: err.message || "____________" });
-        }
-      });
- */
 
 /*  =================================================================
  *  TODO 4— GET /api/songs (Read all) file: server/server.js
