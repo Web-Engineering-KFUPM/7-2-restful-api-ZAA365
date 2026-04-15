@@ -18,6 +18,17 @@ app.use(express.json());
 await connectDB(process.env.MONGO_URL);
 
 // api/songs (Read all songs)
+app.get("/api/songs", async (req, res) => {
+    const rows = await Song.find().sort({ createdAt: -1 });
+    res.json(rows);});
+
+app.get("/api/songs/:id", async (req, res) => {
+    const s = await Song.findById(req.params.id);
+    if (!s) return res.status(404).json({ message: "Song not found" });
+    res.json(s);
+      });
+
+// api/songs (Insert song)
 app.post("/api/songs", async (req, res) => {
     try {
     const { title = "", artist = "", year } = req.body || {};
@@ -32,7 +43,7 @@ app.post("/api/songs", async (req, res) => {
     }
     });
 
-// api/songs (Insert song)
+
 
 // /api/songs/:id (Update song)
 
@@ -40,27 +51,6 @@ app.post("/api/songs", async (req, res) => {
 // /api/songs/:id (Delete song)
 
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
-
-/*  =================================================================
- *  TODO 4— GET /api/songs (Read all) file: server/server.js
- *  =================================================================
- *  Goal:
- *    - Use Song.find() to get all songs from DB.
- *    - Sort by newest first (createdAt descending).
- *    - Return JSON array of songs.
- *
- *  Syntax hint:
-      app.get("__________", async (____, res) => {
-        const rows = await __________.find().sort({ createdAt: ___ });
-        res.json(____);
-      });
-
-      app.get("______________", async (req, res) => {
-        const s = await __________.findById(__________);
-        if (!s) return res.status(___).json({ message: "______________" });
-        res.json(____);
-      });
- */
 
 /** =================================================================
  *  TODO 5 — PUT /api/songs/:id (Update) file: server/server.js
