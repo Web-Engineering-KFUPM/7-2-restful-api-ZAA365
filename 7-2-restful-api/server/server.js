@@ -2,7 +2,9 @@ import express from "express";
 import cors from "cors";
 
 // import dotenv and load environment variables from .env
-
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 import { connectDB } from "./db.js";
 import { Song } from "./models/song.model.js";
@@ -26,22 +28,6 @@ await connectDB(process.env.MONGO_URL);
 // /api/songs/:id (Delete song)
 
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
-
-
-
-
-/** =================================================================
- *  TODO 2 — Import dotenv and load environment (file: server/server.js)
- *  =================================================================
- *  Steps: 
- *    - import the dotenv.
- *    - load the load environment variables.
- * 
- *  Syntax hint:
-        import ______ from "________";
-        ______.config();
- 
- */
 
 
 
