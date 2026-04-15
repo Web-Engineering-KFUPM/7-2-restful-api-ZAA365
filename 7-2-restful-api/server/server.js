@@ -61,45 +61,12 @@ app.put("/api/songs/:id", async (req, res) => {
       });
 
 // /api/songs/:id (Delete song)
+app.delete("/api/songs/:id", async (req, res) => {
+    try{
+        const deleted = await Song.findByIdAndDelete(req.params.id);
+        if (!deleted) return res.status(404).json({ message: "Song not found" });
+        res.status(204).end();
+      }catch (err) {
+res.status(500).json({ message: err.message });}});
 
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
-
-/** =================================================================
- *  TODO 5 — PUT /api/songs/:id (Update) file: server/server.js
- *  =================================================================
- *  Goal:
- *    - Update an existing song by its ID.
- *    - Use Song.findByIdAndUpdate() with {new:true, runValidators:true}.
- *    - If not found → 404 {message:"Song not found"}.
- *
- *  Syntax hint:
-      app.put("/api/songs/:id", async (req, res) => {
-        try {
-          const updated = await Song.findByIdAndUpdate(
-            req.params.id,
-            req.body || {},
-            { new: true, runValidators: true, context: "query" }
-          );
-          if (!updated) return res.status(404).json({ message: "Song not found" });
-          res.json(updated);
-        } catch (err) {
-          res.status(400).json({ message: err.message || "Update failed" });
-        }
-      });
- */
-
-/** =================================================================
- *  TODO 6 — DELETE /api/songs/:id file: server/server.js
- *  =================================================================
- *  Goal:
- *    - Delete a song from DB by its ID.
- *    - If not found → 404 {message:"Song not found"}.
- *    - On success → 204 No Content.
- *
- *  Syntax hint:
-      app.delete("______________", async (req, res) => {
-        const deleted = await __________.findByIdAndDelete(__________);
-        if (!deleted) return res.status(___).json({ message: "______________" });
-        res.status(___).end();
-      });
- */
